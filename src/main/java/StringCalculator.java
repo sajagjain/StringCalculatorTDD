@@ -1,10 +1,10 @@
 import java.util.Arrays;
 
 public class StringCalculator {
-    //Allow the Add method to handle an unknown amount of numbers
+    //Allow the Add method to handle new lines between numbers (instead of commas).
     public int Add(String numbers){
         try {
-            int[] intArr = Arrays.stream(numbers.split(",")).mapToInt(Integer::parseInt).toArray();
+            int[] intArr = Arrays.stream(numbers.split(",|\n")).mapToInt(Integer::parseInt).toArray();
 
             //Check if empty string
             if(intArr.length == 0) return 0;

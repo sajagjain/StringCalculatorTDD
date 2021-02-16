@@ -28,6 +28,14 @@ class StringCalculatorTest {
         Assertions.assertEquals(expected,actual);
     }
 
+    //Allow the Add method to handle new lines between numbers (instead of commas).
+    @ParameterizedTest
+    @MethodSource("uptoNCommaOrNewlineSeparatedNumbers_ShouldReturnTheirSum")
+    void uptoNCommaOrNewlineSeparatedNumbers_ShouldReturnTheirSum(String input, int expected){
+        int actual = calc.Add(input);
+        Assertions.assertEquals(expected,actual);
+    }
+
     static Stream<Arguments> upto2CommaSeperatedNumber_ShouldReturnTheirSum() {
         return Stream.of(
             arguments("1,2", 3),
@@ -42,6 +50,14 @@ class StringCalculatorTest {
         return Stream.of(
                 arguments("1,2,3,4,5", 15),
                 arguments("-3,-1,-10,4,20", 10)
+        );
+    }
+
+    static Stream<Arguments> uptoNCommaOrNewlineSeparatedNumbers_ShouldReturnTheirSum() {
+        return Stream.of(
+                arguments("1,2\n3,4,5", 15),
+                arguments("-3,-1,-10\n4,20", 10),
+                arguments("1\n2\n3,4,5",15)
         );
     }
 }
