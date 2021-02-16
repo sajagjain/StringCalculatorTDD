@@ -5,13 +5,24 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class StringCalculator {
-    //Numbers bigger than 1000 should be ignored
+    //Delimiters can be of any length with the following format
     public int Add(String numbers) throws NegativeNumberException {
         try {
             ArrayList<String> separators = new ArrayList<String>();
             separators.add(",");
             separators.add("\n");
 
+            if(numbers.startsWith("//[")){
+                String[] delimiterAndNumber = numbers.split("\n", 2);
+                String customSeparator = delimiterAndNumber[0]
+                        .replace("//[", "")
+                        .replace("]","");
+                if(customSeparator.contains("*")){
+                    customSeparator = customSeparator.replace("*","\\*");
+                }
+                separators.add(customSeparator);
+                numbers = delimiterAndNumber[1];
+            }
             if(numbers.startsWith("//")) {
                 String[] delimiterAndNumber = numbers.split("\n", 2);
                 String customSeparator = delimiterAndNumber[0].replace("//", "");
