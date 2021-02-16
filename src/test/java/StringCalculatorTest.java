@@ -47,7 +47,7 @@ class StringCalculatorTest {
     static Stream<Arguments> upto2CommaSeperatedNumber_ShouldReturnTheirSum() {
         return Stream.of(
             arguments("1,2", 3),
-            arguments("-3,4", 1),
+            arguments("3,4", 7),
             arguments("1", 1),
             arguments("",0),
             arguments("asd",0)
@@ -57,14 +57,14 @@ class StringCalculatorTest {
     static Stream<Arguments> uptoNCommaSeparatedNumbers_ShouldReturnTheirSum() {
         return Stream.of(
                 arguments("1,2,3,4,5", 15),
-                arguments("-3,-1,-10,4,20", 10)
+                arguments("3,1,10,4,20", 38)
         );
     }
 
     static Stream<Arguments> uptoNCommaOrNewlineSeparatedNumbers_ShouldReturnTheirSum() {
         return Stream.of(
                 arguments("1,2\n3,4,5", 15),
-                arguments("-3,-1,-10\n4,20", 10),
+                arguments("3,1,10\n4,20", 38),
                 arguments("1\n2\n3,4,5",15)
         );
     }
@@ -72,7 +72,7 @@ class StringCalculatorTest {
     static Stream<Arguments> uptoNCustomDelimiterSeparatedNumbers_ShouldReturnTheirSum() {
         return Stream.of(
                 arguments("//:\n1,2\n3,4,5", 15),
-                arguments("//;\n-3;-1,-10\n4;20", 10),
+                arguments("//;\n3;1,10\n4;20", 38),
                 arguments("//a\n1\n2\n3,4a5",15)
         );
     }
