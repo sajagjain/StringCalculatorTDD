@@ -1,17 +1,23 @@
 import java.util.Arrays;
 
 public class StringCalculator {
+    //Allow the Add method to handle an unknown amount of numbers
     public int Add(String numbers){
         try {
-            String[] stringArr = numbers.split(",", 2);
+            int[] intArr = Arrays.stream(numbers.split(",")).mapToInt(Integer::parseInt).toArray();
 
             //Check if empty string
-            if(stringArr.length == 0) return 0;
+            if(intArr.length == 0) return 0;
             //Check if only one num in string
-            if (stringArr.length == 1) return Integer.parseInt(stringArr[0]);
+            if (intArr.length == 1) return intArr[0];
 
-            //Handle 2 Number Addition
-            return Integer.parseInt(stringArr[0]) + Integer.parseInt(stringArr[1]);
+            //Handle N Number Addition
+            int sum = 0;
+            for (int num:intArr) {
+                 sum += num;
+            }
+
+            return sum;
         }catch(Exception e){
             return 0;
         }
