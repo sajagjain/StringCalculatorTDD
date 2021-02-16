@@ -1,9 +1,12 @@
+import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 public class StringCalculator {
-    //Allow the Add method to Support different delimiters
-    public int Add(String numbers){
+    //Calling Add with a negative number will throw an exception
+    public int Add(String numbers) throws NegativeNumberException {
         try {
             ArrayList<String> separators = new ArrayList<String>();
             separators.add(",");
@@ -17,9 +20,25 @@ public class StringCalculator {
             }
 
             //Handle N Number Addition
-            int sum = Arrays.stream(numbers.split(String.join("|",separators))).mapToInt(Integer::parseInt).sum();
-            return sum;
-        }catch(Exception e){
+            String[] nums = numbers.split(String.join("|",separators));
+            String negativeNums = "";
+            for (String num:nums) {
+                if(num.contains("-")){
+                    negativeNums += " "+num;
+                }
+            }
+            if(negativeNums.length() > 0){
+                throw new NegativeNumberException("negatives not allowed"+negativeNums);
+            }
+            else{
+                int sum = Arrays.stream(nums).mapToInt(Integer::parseInt).sum();
+                return sum;
+            }
+        }
+        catch (NegativeNumberException e){
+            throw e;
+        }
+        catch(Exception e){
             return 0;
         }
     }

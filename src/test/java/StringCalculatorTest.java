@@ -15,7 +15,7 @@ class StringCalculatorTest {
     //Allow the Add method to handle upto 2 numbers
     @ParameterizedTest
     @MethodSource("upto2CommaSeperatedNumber_ShouldReturnTheirSum")
-    void upto2CommaSeperatedNumber_ShouldReturnTheirSum(String input, int expected) {
+    void upto2CommaSeperatedNumber_ShouldReturnTheirSum(String input, int expected) throws NegativeNumberException {
         int actual = calc.Add(input);
         Assertions.assertEquals(expected,actual);
     }
@@ -23,7 +23,7 @@ class StringCalculatorTest {
     //Allow the Add method to handle an unknown amount of numbers
     @ParameterizedTest
     @MethodSource("uptoNCommaSeparatedNumbers_ShouldReturnTheirSum")
-    void uptoNCommaSeparatedNumbers_ShouldReturnTheirSum(String input,int expected){
+    void uptoNCommaSeparatedNumbers_ShouldReturnTheirSum(String input,int expected) throws NegativeNumberException {
         int actual = calc.Add(input);
         Assertions.assertEquals(expected,actual);
     }
@@ -31,7 +31,7 @@ class StringCalculatorTest {
     //Allow the Add method to handle new lines between numbers (instead of commas).
     @ParameterizedTest
     @MethodSource("uptoNCommaOrNewlineSeparatedNumbers_ShouldReturnTheirSum")
-    void uptoNCommaOrNewlineSeparatedNumbers_ShouldReturnTheirSum(String input, int expected){
+    void uptoNCommaOrNewlineSeparatedNumbers_ShouldReturnTheirSum(String input, int expected) throws NegativeNumberException {
         int actual = calc.Add(input);
         Assertions.assertEquals(expected,actual);
     }
@@ -39,11 +39,21 @@ class StringCalculatorTest {
     //Allow the Add method to Support different delimiters
     @ParameterizedTest
     @MethodSource("uptoNCustomDelimiterSeparatedNumbers_ShouldReturnTheirSum")
-    void uptoNCustomDelimiterSeparatedNumbers_ShouldReturnTheirSum(String input, int expected){
+    void uptoNCustomDelimiterSeparatedNumbers_ShouldReturnTheirSum(String input, int expected) throws NegativeNumberException {
         int actual = calc.Add(input);
         Assertions.assertEquals(expected,actual);
     }
 
+    //Calling Add with a negative number will throw an exception
+    @ParameterizedTest
+    @MethodSource("uptoNCustomDelimitedSeparateNumbersWithNegativeNumbers_ShouldThrowException")
+    void uptoNCustomDelimitedSeparateNumbersWithNegativeNumbers_ShouldThrowException(String input,Exception expected){
+        Assertions.assertThrows(expected.getClass(),()->{
+            int actual = calc.Add(input);
+        },expected.getMessage());
+    }
+
+    //Test Data Methods
     static Stream<Arguments> upto2CommaSeperatedNumber_ShouldReturnTheirSum() {
         return Stream.of(
             arguments("1,2", 3),
@@ -74,6 +84,14 @@ class StringCalculatorTest {
                 arguments("//:\n1,2\n3,4,5", 15),
                 arguments("//;\n3;1,10\n4;20", 38),
                 arguments("//a\n1\n2\n3,4a5",15)
+        );
+    }
+
+    static Stream<Arguments> uptoNCustomDelimitedSeparateNumbersWithNegativeNumbers_ShouldThrowException() {
+        return Stream.of(
+                arguments("//:\n1,-2\n3,4,5", new NegativeNumberException("negatives not allowed -2")),
+                arguments("//;\n3;1,-10\n4;-4", new NegativeNumberException("negatives not allowed -10 -4")),
+                arguments("-1,-4,-5",new NegativeNumberException("negatives not allowed -1 -4 -5"))
         );
     }
 }
