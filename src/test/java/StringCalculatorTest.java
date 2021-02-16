@@ -53,6 +53,13 @@ class StringCalculatorTest {
         },expected.getMessage());
     }
 
+    @ParameterizedTest
+    @MethodSource("numOver1000_ShouldBeIgnored")
+    void numOver1000_ShouldBeIgnored(String input, int expected) throws NegativeNumberException {
+        int actual = calc.Add(input);
+        Assertions.assertEquals(expected,actual);
+    }
+
     //Test Data Methods
     static Stream<Arguments> upto2CommaSeperatedNumber_ShouldReturnTheirSum() {
         return Stream.of(
@@ -92,6 +99,14 @@ class StringCalculatorTest {
                 arguments("//:\n1,-2\n3,4,5", new NegativeNumberException("negatives not allowed -2")),
                 arguments("//;\n3;1,-10\n4;-4", new NegativeNumberException("negatives not allowed -10 -4")),
                 arguments("-1,-4,-5",new NegativeNumberException("negatives not allowed -1 -4 -5"))
+        );
+    }
+
+    static Stream<Arguments> numOver1000_ShouldBeIgnored(){
+        return Stream.of(
+            arguments("//:\n1:2,3,1000",1006),
+            arguments("//:\n1:2,3,100,1002",106),
+            arguments("2,3444,1",3)
         );
     }
 }

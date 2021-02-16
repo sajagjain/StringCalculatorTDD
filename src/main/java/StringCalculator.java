@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class StringCalculator {
-    //Calling Add with a negative number will throw an exception
+    //Numbers bigger than 1000 should be ignored
     public int Add(String numbers) throws NegativeNumberException {
         try {
             ArrayList<String> separators = new ArrayList<String>();
@@ -31,7 +31,7 @@ public class StringCalculator {
                 throw new NegativeNumberException("negatives not allowed"+negativeNums);
             }
             else{
-                int sum = Arrays.stream(nums).mapToInt(Integer::parseInt).sum();
+                int sum = Arrays.stream(nums).mapToInt(Integer::parseInt).filter(a->a <= 1000).sum();
                 return sum;
             }
         }
