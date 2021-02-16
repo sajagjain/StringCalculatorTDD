@@ -36,6 +36,14 @@ class StringCalculatorTest {
         Assertions.assertEquals(expected,actual);
     }
 
+    //Allow the Add method to Support different delimiters
+    @ParameterizedTest
+    @MethodSource("uptoNCustomDelimiterSeparatedNumbers_ShouldReturnTheirSum")
+    void uptoNCustomDelimiterSeparatedNumbers_ShouldReturnTheirSum(String input, int expected){
+        int actual = calc.Add(input);
+        Assertions.assertEquals(expected,actual);
+    }
+
     static Stream<Arguments> upto2CommaSeperatedNumber_ShouldReturnTheirSum() {
         return Stream.of(
             arguments("1,2", 3),
@@ -58,6 +66,14 @@ class StringCalculatorTest {
                 arguments("1,2\n3,4,5", 15),
                 arguments("-3,-1,-10\n4,20", 10),
                 arguments("1\n2\n3,4,5",15)
+        );
+    }
+
+    static Stream<Arguments> uptoNCustomDelimiterSeparatedNumbers_ShouldReturnTheirSum() {
+        return Stream.of(
+                arguments("//:\n1,2\n3,4,5", 15),
+                arguments("//;\n-3;-1,-10\n4;20", 10),
+                arguments("//a\n1\n2\n3,4a5",15)
         );
     }
 }

@@ -1,10 +1,22 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class StringCalculator {
-    //Allow the Add method to handle new lines between numbers (instead of commas).
+    //Allow the Add method to Support different delimiters
     public int Add(String numbers){
         try {
-            int[] intArr = Arrays.stream(numbers.split(",|\n")).mapToInt(Integer::parseInt).toArray();
+            ArrayList<String> separators = new ArrayList<String>();
+            separators.add(",");
+            separators.add("\n");
+
+            if(numbers.startsWith("//")) {
+                String[] delimiterAndNumber = numbers.split("\n", 2);
+                String customSeparator = delimiterAndNumber[0].replace("//", "");
+                separators.add(customSeparator);
+                numbers = delimiterAndNumber[1];
+            }
+
+            int[] intArr = Arrays.stream(numbers.split(String.join("|",separators))).mapToInt(Integer::parseInt).toArray();
 
             //Check if empty string
             if(intArr.length == 0) return 0;
