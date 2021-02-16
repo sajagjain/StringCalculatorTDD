@@ -68,6 +68,14 @@ class StringCalculatorTest {
         Assertions.assertEquals(expected,actual);
     }
 
+    //Allow multiple delimiters of any length 8 & 9
+    @ParameterizedTest
+    @MethodSource("numsWithNDelimiterOfAnyLength_ShouldReturnTheirSum")
+    void numsWithNDelimiterOfAnyLength_ShouldReturnTheirSum(String input, int expected) throws NegativeNumberException {
+        int actual = calc.Add(input);
+        Assertions.assertEquals(expected,actual);
+    }
+
     //Test Data Methods
     static Stream<Arguments> upto2CommaSeperatedNumber_ShouldReturnTheirSum() {
         return Stream.of(
@@ -124,4 +132,12 @@ class StringCalculatorTest {
                 arguments("//[::]\n1::2,3,100::1002",106)
         );
     }
+
+    static Stream<Arguments> numsWithNDelimiterOfAnyLength_ShouldReturnTheirSum(){
+        return Stream.of(
+                arguments("//[***][::]\n1***2::3***1000::10",1016),
+                arguments("//[::][***]\n1::2***3,100***1002",106)
+        );
+    }
+
 }

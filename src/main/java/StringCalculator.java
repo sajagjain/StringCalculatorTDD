@@ -2,25 +2,29 @@ import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.IntStream;
 
 public class StringCalculator {
-    //Delimiters can be of any length with the following format
+    //Allow multiple delimiters of any length 8 & 9
     public int Add(String numbers) throws NegativeNumberException {
         try {
             ArrayList<String> separators = new ArrayList<String>();
             separators.add(",");
             separators.add("\n");
 
+            //Handle Multiple Delimiters with [][] syntax first
             if(numbers.startsWith("//[")){
                 String[] delimiterAndNumber = numbers.split("\n", 2);
-                String customSeparator = delimiterAndNumber[0]
+                String[] customSeparator = (delimiterAndNumber[0]
                         .replace("//[", "")
-                        .replace("]","");
-                if(customSeparator.contains("*")){
-                    customSeparator = customSeparator.replace("*","\\*");
-                }
-                separators.add(customSeparator);
+                        .replace("][",",")
+                        .replace("]",""))
+                        .replace("*","\\*")
+                        .split(",");
+
+                Collections.addAll(separators,customSeparator);
                 numbers = delimiterAndNumber[1];
             }
             if(numbers.startsWith("//")) {
